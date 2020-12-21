@@ -29,7 +29,7 @@ DOCKER_EXTRA_ARGS        ?=
 DOCKER_REGISTRY          ?=
 DOCKER_REPOSITORY        ?=
 DOCKER_TAG               ?= ${VERSION}
-ADAPTER_IMAGENAME        := ${DOCKER_REGISTRY}${DOCKER_REPOSITORY}voltha-epononu-adapter:1.0.0
+ADAPTER_IMAGENAME        := ${DOCKER_REGISTRY}${DOCKER_REPOSITORY}voltha-epononu-adapter:1.1.0
 TYPE                     ?= minimal
 
 ## Docker labels. Only set ref and commit date if committed
@@ -153,7 +153,7 @@ lint: local-lib-go lint-style lint-sanity lint-mod lint-dockerfile
 
 test: lint
 	@mkdir -p ./tests/results
-	@${GO} test -mod=vendor -v -coverprofile ./tests/results/go-test-coverage.out -covermode count ./... 2>&1 | tee ./tests/results/go-test-results.out ;\
+	@${GO} test -mod=vendor -timeout 60m -v -coverprofile ./tests/results/go-test-coverage.out -covermode count ./... 2>&1 | tee ./tests/results/go-test-results.out ;\
 	RETURN=$$? ;\
 	${GO_JUNIT_REPORT} < ./tests/results/go-test-results.out > ./tests/results/go-test-results.xml ;\
 	${GOCOVER_COBERTURA} < ./tests/results/go-test-coverage.out > ./tests/results/go-test-coverage.xml ;\
